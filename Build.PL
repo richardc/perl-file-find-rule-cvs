@@ -8,7 +8,7 @@ Module::Build
              'Test::More' => 0,
 	 },
          requires    => {
-             'Parse::CVSEntries' => 0,
+             'Parse::CVSEntries' => '0.03',
          },
          create_makefile_pl => 'traditional',
         )

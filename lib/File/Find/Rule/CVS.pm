@@ -29,7 +29,7 @@ sub File::Find::Rule::_cvs_entry {
     return $self->{_entries}{ $path }{ $file }
       if exists $self->{_entries}{ $path };
 
-    my $parse = Parse::CVSEntries->new( "$path/CVS/Entries" )
+    my $parse = Parse::CVSEntries->new( "CVS/Entries" )
       or return;
 
     $self->{_entries}{ $path } = { map { $_->name => $_ } $parse->entries };
