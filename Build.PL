@@ -5,7 +5,8 @@ Module::Build
   ->new( module_name => "File::Find::Rule::CVS",
          license     => 'perl',
          build_requires => {
-             'Test::More' => 0,
+             'File::Slurp::Tree' => 0,
+             'Test::More'        => 0,
          },
          requires    => {
              'Parse::CVSEntries' => '0.03',
