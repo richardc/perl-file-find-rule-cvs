@@ -20,6 +20,8 @@ File::Find::Rule::CVS - find files based on CVS metadata
 File::Find::Rule::CVS extends File::Find::Rule to add clauses based on
 the contents CVS/Entries files.
 
+=head1 RULES
+
 =cut
 
 sub File::Find::Rule::_cvs_entry {
@@ -36,6 +38,12 @@ sub File::Find::Rule::_cvs_entry {
     return $self->{_entries}{ $path }{ $file };
 }
 
+=head2 cvs_modified
+
+Matches a file which the cvs sandbox thinks is modified
+
+=cut
+
 sub File::Find::Rule::cvs_modified () {
     my $self = shift()->_force_object;
     my $sub = sub {
@@ -44,6 +52,22 @@ sub File::Find::Rule::cvs_modified () {
     };
     $self->exec( $sub );
 }
+
+
+=head2 cvs_unknown
+
+Matches an entry in a working directory that CVS doesn't know about
+
+=cut
+
+sub File::Find::Rule::cvs_unknown () {
+    my $self = shift()->_force_object;
+    my $sub = sub {
+        return !$self->_cvs_entry( @_ );
+    };
+    $self->exec( $sub );
+}
+
 
 1;
 __END__
