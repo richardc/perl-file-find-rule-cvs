@@ -1,6 +1,6 @@
 #!perl -w
 use strict;
-use Test::More tests => 4;
+use Test::More tests => 6;
 use File::Slurp::Tree;
 use POSIX qw(strftime);
 
@@ -40,3 +40,11 @@ is_deeply( [ find( file => cvs_modified => relative => in => $path ) ],
 is_deeply( [ find( maxdepth => 1, file => cvs_unknown => relative => in => $path ) ],
            [ 'unknown' ],
           "cvs_unknown" );
+
+is_deeply( [ find( file => cvs_version => '>1.1', relative => in => $path ) ],
+           [ 'modified' ],
+          "cvs_version" );
+
+is_deeply( [ find( file => cvs_version => '1.2', relative => in => $path ) ],
+           [ 'modified' ],
+          "cvs_version" );

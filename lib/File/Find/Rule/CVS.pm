@@ -2,6 +2,7 @@ use strict;
 package File::Find::Rule::CVS;
 use File::Find::Rule;
 use Parse::CVSEntries;
+use version;
 use base 'File::Find::Rule';
 use vars qw( $VERSION );
 $VERSION = '0.01';
@@ -18,7 +19,7 @@ File::Find::Rule::CVS - find files based on CVS metadata
 =head1 DESCRIPTION
 
 File::Find::Rule::CVS extends File::Find::Rule to add clauses based on
-the contents CVS/Entries files.
+the contents of CVS/Entries files.
 
 =head1 RULES
 
@@ -64,6 +65,27 @@ sub File::Find::Rule::cvs_unknown () {
     my $self = shift()->_force_object;
     my $sub = sub {
         return !$self->_cvs_entry( @_ );
+    };
+    $self->exec( $sub );
+}
+
+
+=head2 cvs_version( $test )
+
+Matches files with versions that match $test.  $test is a
+Number::Compare expression applied to a L<version> object.
+
+=cut
+
+sub File::Find::Rule::cvs_version {
+    my $self = shift()->_force_object;
+    my $test = Number::Compare->new( shift );
+
+    my $sub = sub {
+        my $entry = $self->_cvs_entry( @_ )
+          or return;
+        my $version = version->new( $entry->version );
+        return $test->( $version );
     };
     $self->exec( $sub );
 }
